@@ -285,12 +285,12 @@ export default function BenchDashboard() {
 
   // ─── Render ─────────────────────────────────────────────────────────────────
   const tabs: { id: Tab; label: string }[] = [
-    { id: 'sweep', label: '📈 Sweep & Plot' },
-    { id: 'gain', label: '🔁 Custom Gain' },
-    { id: 'manual', label: '🔌 Manual Route' },
-    { id: 'calibration', label: '⚙️ Calibration' },
-    { id: 'pinmap', label: '📌 Pin Map' },
-    { id: 'protocol', label: '📡 Protocol' },
+    { id: 'sweep', label: 'Sweep & Plot' },
+    { id: 'gain', label: 'Custom Gain' },
+    { id: 'manual', label: 'Manual Route' },
+    { id: 'calibration', label: 'Calibration' },
+    { id: 'pinmap', label: 'Pin Map' },
+    { id: 'protocol', label: 'Protocol' },
   ];
 
   const modeColor = (m: SystemMode) =>
@@ -315,7 +315,7 @@ export default function BenchDashboard() {
             AUTO_OPAMP_BENCH
             <span className="text-slate-600 ml-2 font-normal text-xs">// CONTROLLER v2.0</span>
           </h1>
-          <p className="text-[10px] text-slate-500">CD74HC4067 5× MUX Matrix · ADS1115 16-bit ADC · Web Serial JSON-RPC</p>
+          <p className="text-[10px] text-slate-500">CD74HC4067 5× MUX Matrix ADS1115 16-bit ADC Web Serial JSON-RPC</p>
         </div>
         <div className="flex items-center gap-4">
           {/* Status pill */}
@@ -360,7 +360,7 @@ export default function BenchDashboard() {
           color="text-emerald-400" sub={computedGain ? `slope=${computedGain.slope.toFixed(4)} R²=${computedGain.r2.toFixed(4)}` : undefined} />
         <MetricCard label="Slew Rate (est.)" value={slewRate !== null && slewRate > 0 ? slewRate.toFixed(3) : undefined} unit="V/µs" color="text-rose-400" />
         <MetricCard label="Sweep Points" value={sweepData.length > 0 ? sweepData.length.toString() : undefined}
-          color="text-slate-300" sub={sweepRunning ? '● acquiring...' : sweepData.length > 0 ? 'complete' : ''} />
+          color="text-slate-300" sub={sweepRunning ? 'acquiring...' : sweepData.length > 0 ? 'complete' : ''} />
       </section>
 
       {/* ── Quick-action mode buttons ── */}
@@ -432,16 +432,16 @@ export default function BenchDashboard() {
                     ~{(Math.ceil((sweepCfg.stop - sweepCfg.start) / sweepCfg.step) * 10 / 1000).toFixed(1)}s est.
                   </div>
                   <button disabled={!isConnected || sweepRunning} onClick={sendSweep} className={btnCls('primary')}>
-                    {sweepRunning ? '⏳ Running…' : '▶ Run Sweep'}
+                    {sweepRunning ? 'Running...' : 'Run Sweep'}
                   </button>
                   <button disabled={sweepData.length === 0} onClick={() => setSweepData([])} className={btnCls('ghost')}>
-                    ✕ Clear
+                     Clear
                   </button>
                   <button disabled={sweepData.length === 0} onClick={exportCSV} className={btnCls('secondary')}>
-                    ⬇ CSV
+                    Export CSV
                   </button>
                   <button disabled={sweepData.length === 0} onClick={exportJSON} className={btnCls('secondary')}>
-                    ⬇ JSON
+                    Export JSON
                   </button>
                 </div>
 
@@ -569,20 +569,20 @@ export default function BenchDashboard() {
 
                 <div className="flex gap-3">
                   <button disabled={!isConnected || sweepRunning} onClick={sendCustomGain} className={btnCls('primary')}>
-                    {sweepRunning ? '⏳ Acquiring…' : '▶ Run Gain Test'}
+                    {sweepRunning ? 'Acquiring...' : 'Run Gain Test'}
                   </button>
                   <button disabled={sweepData.length === 0} onClick={() => setSweepData([])} className={btnCls('ghost')}>
-                    ✕ Clear Results
+                     Clear Results
                   </button>
                   <button disabled={sweepData.length === 0} onClick={exportCSV} className={btnCls('secondary')}>
-                    ⬇ Export CSV
+                    Export CSV
                   </button>
                 </div>
 
                 {/* Results chart */}
                 {sweepData.length > 0 && (
                   <>
-                    <SectionHeader title="Gain Test Results" badge={`Bank ${gainBank} CH${gainInputCh} → FB CH${gainFbCh}`} />
+                    <SectionHeader title="Gain Test Results" badge={`Bank ${gainBank} CH${gainInputCh} -> FB CH${gainFbCh}`} />
                     <div className="bg-slate-900 border border-emerald-500/20 rounded-lg p-4 h-72">
                       <Scatter data={sweepChartData} options={chartOptions('Vin (V)', 'Vout (V)')} />
                     </div>
@@ -630,14 +630,14 @@ export default function BenchDashboard() {
                   </div>
                   <div className="flex gap-3">
                     <button disabled={!isConnected} onClick={sendManualRoute} className={btnCls('primary')}>
-                      ↳ Route {manualMux} → CH{manualCh}
+                      {'-> Route ' + manualMux + ' -> CH' + manualCh}
                     </button>
                     <button disabled={!isConnected} onClick={sendIdle} className={btnCls('ghost')}>
-                      → IDLE (release)
+                      {'-> IDLE (release)'}
                     </button>
                   </div>
                   <div className="text-[10px] text-slate-600 bg-slate-800/40 rounded p-2 font-mono">
-                    → <span className="text-amber-400">{'{'}"cmd":"MANUAL_ROUTE","mux":"{manualMux}","ch":{manualCh}{'}'}</span>
+                    {'-> '}<span className="text-amber-400">{'{'}"cmd":"MANUAL_ROUTE","mux":"{manualMux}","ch":{manualCh}{'}'}</span>
                   </div>
                 </div>
 
@@ -689,7 +689,7 @@ export default function BenchDashboard() {
                       </p>
                     </div>
                     <button disabled={!isConnected} onClick={sendCalibrate} className={btnCls('primary')}>
-                      ⚙ Send Calibration Config
+                       Send Calibration Config
                     </button>
                   </div>
 
@@ -718,11 +718,11 @@ export default function BenchDashboard() {
                 <SectionHeader title="Automated Routine" />
                 <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
                   <p className="text-[11px] text-slate-500 mb-3">
-                    Runs the full automated parametric extraction: zero-differential baseline → Vos → Ib → Aol.
+                    Runs the full automated parametric extraction: zero-differential baseline -- Vos -- Ib -- Aol.
                     Ensure DUT is biased and bench power supply is stable before running.
                   </p>
                   <button disabled={!isConnected} onClick={sendAuto} className={btnCls('primary')}>
-                    ▶ Run Full AUTO Extraction
+                    Run Full AUTO Extraction
                   </button>
                 </div>
               </div>
@@ -845,7 +845,7 @@ export default function BenchDashboard() {
                 <div className="space-y-4">
                   {[
                     {
-                      dir: 'TX → MCU', color: 'text-sky-400', cmds: [
+                      dir: 'TX -> MCU', color: 'text-sky-400', cmds: [
                         ['SET_MODE', '{"cmd":"SET_MODE","mode":"AUTO"|"IDLE"|"MANUAL"|"CALIBRATION"}', 'Switch operating mode'],
                         ['START_SWEEP', '{"cmd":"START_SWEEP","start_v":0,"stop_v":4.5,"step_v":0.05}', 'Begin transfer sweep'],
                         ['TEST_GAIN', '{"cmd":"TEST_GAIN","input_mux_ch":2,"feedback_mux_ch":0,"bank":"A"}', 'Programmable gain test'],
@@ -899,7 +899,7 @@ export default function BenchDashboard() {
             <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Serial Console</span>
             <div className="flex gap-2">
               <span className="text-[10px] text-slate-600">{logs.length} lines</span>
-              <button onClick={clearLogs} className="text-[10px] text-slate-600 hover:text-slate-400 transition">✕ Clear</button>
+              <button onClick={clearLogs} className="text-[10px] text-slate-600 hover:text-slate-400 transition"> Clear</button>
             </div>
           </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-0.5 text-[10px] font-mono">
@@ -909,7 +909,7 @@ export default function BenchDashboard() {
                 : log.type === 'error' ? 'text-rose-400'
                 : log.type === 'system' ? 'text-amber-400/70'
                 : 'text-slate-400';
-              const prefix = log.type === 'tx' ? '→' : log.type === 'rx' ? '←' : log.type === 'error' ? '✕' : '·';
+              const prefix = log.type === 'tx' ? '->' : log.type === 'rx' ? '←' : log.type === 'error' ? '' : '·';
               return (
                 <div key={log.id} className={`flex gap-2 leading-relaxed ${color}`}>
                   <span className="text-slate-700 shrink-0">{tsStr}</span>
